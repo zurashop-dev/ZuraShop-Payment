@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment ZuraShop</title>
+    <style>
+        /* Ganti URL ini untuk mengubah latar belakang */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: url('https://images.pexels.com/photos/2670898/pexels-photo-2670898.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 20px;
+            color: white;
+        }
+
+        /* Container utama */
+        .container {
+            max-width: 350px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Gaya untuk judul */
+        .container h2 {
+            margin: 0;
+            font-size: 30px;
+        }
+
+        .container p {
+            font-size: 15px;
+            margin: 5px 0 15px;
+        }
+
+        /* Gambar QRIS */
+        .qris-box img {
+            width: 100%;
+            max-width: 200px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        /* Efek saat QRIS diklik */
+        .qris-box img:active {
+            animation: clickEffect 0.2s ease;
+        }
+
+        /* Tombol metode pembayaran */
+        .payment-btn {
+            display: block;
+            width: 90%;
+            margin: 10px auto;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .dana { background: #0077ff; color: white; }
+        .gopay { background: #00aa00; color: white; }
+        .ovo { background: #8b00ff; color: white; }
+
+        .payment-btn:active {
+            animation: clickEffect 0.2s ease;
+        }
+
+        /* Tombol Grup WhatsApp */
+        .whatsapp-btn {
+            display: block;
+            width: 90%;
+            margin: 10px auto;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            background: #25D366;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .whatsapp-btn:active {
+            animation: clickEffect 0.2s ease;
+        }
+
+        /* Popup */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 80%;
+            max-width: 300px;
+        }
+
+        .copy-btn, .close-btn {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .copy-btn { background: #0077ff; color: white; }
+        .close-btn { background: #ddd; color: black; }
+
+        /* Animasi klik */
+        @keyframes clickEffect {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>PAYMENT ZuraShop</h2>
+        <p>Pilih metode pembayaran:</p>
+
+        <!-- Gambar QRIS -->
+        <div class="qris-box">
+            <img src="-" alt="QRIS AllPay" id="qrisImage">
+        </div>
+
+        <!-- Tombol Pembayaran -->
+        <button class="payment-btn dana" onclick="showPopup('Dana', '089523523000', 'W**IL*H')">Dana</button>
+        <button class="payment-btn gopay" onclick="showPopup('Gopay', '089523523000', 'ZuraShop')">Gopay</button>
+        <button class="payment-btn ovo" onclick="showPopup('OVO', 'Gak Ada', 'Not Found')">OVO</button>
+        </div>
+        <!-- Link WhatsApp -->
+        <div>
+        <a href="https://whatsapp.com/channel/0029VatwqJjFMqrgAzlx9o1d" class="whatsapp-btn" target="_blank">TestiMoni</a>
+        <a href="https://wa.me/6289523523000" class="whatsapp-btn" target="_blank">Owner</a>
+    </div>
+
+    <!-- Popup Dialog -->
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <h3 id="paymentMethod"></h3>
+            <p><strong>Nomor:</strong> <span id="paymentNumber"></span></p>
+            <p><strong>A/n:</strong> <span id="paymentOwner"></span></p>
+            <button class="copy-btn" onclick="copyNumber()">Copy Nomor</button>
+            <button class="close-btn" onclick="closePopup()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // Event animasi klik pada QRIS
+        document.getElementById("qrisImage").addEventListener("click", function () {
+            this.style.transform = "scale(0.9)";
+            setTimeout(() => {
+                this.style.transform = "scale(1)";
+            }, 200);
+        });
+
+        // Menampilkan popup pembayaran
+        function showPopup(method, number, owner) {
+            document.getElementById("paymentMethod").textContent = method;
+            document.getElementById("paymentNumber").textContent = number;
+            document.getElementById("paymentOwner").textContent = owner;
+            document.getElementById("popup").style.display = "flex";
+        }
+
+        // Menutup popup
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+
+        // Menyalin nomor ke clipboard
+        function copyNumber() {
+            let number = document.getElementById("paymentNumber").textContent;
+            navigator.clipboard.writeText(number).then(() => {
+                alert("Nomor berhasil disalin: " + number);
+            });
+        }
+    </script>
+
+</body>
+</html>
